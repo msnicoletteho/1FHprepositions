@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Preposition Playground - Learning Deck & Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+        body { font-family: 'Fredoka', sans-serif; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.9); }
+        }
+        .pulse-card { animation: pulse-glow 2s infinite; }
+    </style>
+</head>
+<body class="bg-amber-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-amber-300">
+
+    <header class="bg-white border-b-4 border-amber-200 px-6 py-4 shadow-sm sticky top-0 z-30 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span id="mode-badge" class="bg-amber-500 text-white text-xl font-bold px-3 py-1 rounded-2xl shadow-sm">Deck</span>
+            <h1 id="app-title" class="text-2xl font-bold text-amber-900 tracking-wide">Preposition Playground</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div id="deck-indicator" class="flex items-center space-x-2">
+                <span id="page-indicator" class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1.5 rounded-xl">Page 1 of 5</span>
+            </div>
+            <div id="game-indicator" class="hidden flex items-center space-x-4">
+                <span class="text-sm font-semibold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-xl">Score: <span id="current-score" class="text-emerald-900 font-bold text-base">0</span></span>
+                <span id="streak-badge" class="hidden text-sm font-bold text-amber-700 bg-amber-100 px-3 py-1.5 rounded-xl animate-bounce">🔥 Streak x<span id="streak-val">0</span></span>
+            </div>
+            <button id="tts-toggle" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-900 px-3 py-1.5 rounded-xl text-sm font-bold flex items-center space-x-1 transition shadow-sm" onclick="toggleAudioReader()">
+                <span id="tts-icon">🔊</span>
+                <span id="tts-label">Read Aloud</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Timer Bar Container -->
+    <div id="timer-bar-container" class="w-full bg-slate-200 h-2.5 hidden sticky top-[73px] z-20">
+        <div id="timer-bar-fill" class="bg-rose-500 h-2.5 transition-all duration-1000 w-full"></div>
+    </div>
+
+    <main class="max-w-4xl w-full mx-auto p-6 my-auto flex-grow">
+        
+        <!-- ================= LEARNING DECK PAGES ================= -->
+        
+        <!-- PAGE 1: Welcome & Guide -->
+        <section id="page-1" class="deck-page space-y-6">
+            <div class="bg-white border-4 border-amber-300 rounded-3xl p-8 shadow-xl text-center relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 text-9xl opacity-10">🚀</div>
+                <span class="bg-amber-100 text-amber-800 font-bold px-4 py-1.5 rounded-full text-sm inline-block mb-4">Welcome Explorers!</span>
+                <h2 class="text-4xl font-bold text-amber-900 mb-4">Master At, On, and In!</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
+                    Welcome to our interactive Learning Deck! Today we will discover how to use special helper words called <span class="bg-amber-300 text-amber-900 px-2 py-0.5 rounded-lg font-bold">prepositions</span> to tell us <strong>where</strong> and <strong>when</strong> things happen.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left my-6">
+                    <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl">
+                        <div class="text-2xl mb-1">🧭</div>
+                        <h3 class="font-bold text-amber-900">How to Navigate</h3>
+                        <p class="text-sm text-slate-600">Use the Next and Back buttons at the bottom of the page to move step-by-step through our adventure.</p>
+                    </div>
+                    <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl">
+                        <div class="text-2xl mb-1">🃏</div>
+                        <h3 class="font-bold text-amber-900">Interactive Flip Cards</h3>
+                        <p class="text-sm text-slate-600">Tap glowing cards to flip them over and reveal hidden examples and secrets!</p>
+                    </div>
+                    <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl">
+                        <div class="text-2xl mb-1">✨</div>
+                        <h3 class="font-bold text-amber-900">Animated Demos</h3>
+                        <p class="text-sm text-slate-600">Watch live demonstrations showing how words fit together in real time.</p>
+                    </div>
+                </div>
+
+                <button onclick="goToPage(2)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xl px-8 py-4 rounded-2xl shadow-lg transform transition active:scale-95">
+                    Start Learning! ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 2: Prepositions of Time -->
+        <section id="page-2" class="deck-page space-y-6 hidden">
+            <div class="bg-white border-4 border-amber-300 rounded-3xl p-8 shadow-xl">
+                <div class="flex items-center space-x-3 mb-6">
+                    <span class="bg-amber-500 text-white text-xl p-2 rounded-2xl">⏰</span>
+                    <div>
+                        <h2 class="text-3xl font-bold text-amber-900">When things happen: AT, ON, IN</h2>
+                        <p class="text-slate-600">Tap each card below to flip it and see when to use each helper word!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Flip Card AT -->
+                    <div class="perspective-1000 h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="relative w-full h-full duration-500 transform-style-3d card-inner">
+                            <div class="absolute inset-0 bg-sky-100 border-4 border-sky-300 rounded-3xl p-6 flex flex-col items-center justify-center text-center backface-hidden pulse-card">
+                                <span class="bg-sky-500 text-white text-2xl font-bold px-4 py-1 rounded-xl mb-3">AT</span>
+                                <p class="font-bold text-sky-900 text-lg">Specific Times & Festivals</p>
+                                <p class="text-xs text-sky-700 mt-2 font-semibold">Tap to flip & see examples! 👆</p>
+                            </div>
+                            <div class="absolute inset-0 bg-sky-500 border-4 border-sky-600 rounded-3xl p-6 flex flex-col items-center justify-center text-center text-white backface-hidden rotate-y-180">
+                                <h3 class="font-bold text-xl mb-2">Use AT for:</h3>
+                                <ul class="text-sm space-y-1 font-medium">
+                                    <li>• <span class="bg-sky-700 px-2 py-0.5 rounded">at</span> 7 am</li>
+                                    <li>• <span class="bg-sky-700 px-2 py-0.5 rounded">at</span> noon</li>
+                                    <li>• <span class="bg-sky-700 px-2 py-0.5 rounded">at</span> night</li>
+                                    <li>• <span class="bg-sky-700 px-2 py-0.5 rounded">at</span> Christmas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flip Card ON -->
+                    <div class="perspective-1000 h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="relative w-full h-full duration-500 transform-style-3d card-inner">
+                            <div class="absolute inset-0 bg-emerald-100 border-4 border-emerald-300 rounded-3xl p-6 flex flex-col items-center justify-center text-center backface-hidden pulse-card">
+                                <span class="bg-emerald-500 text-white text-2xl font-bold px-4 py-1 rounded-xl mb-3">ON</span>
+                                <p class="font-bold text-emerald-900 text-lg">Dates & Days</p>
+                                <p class="text-xs text-emerald-700 mt-2 font-semibold">Tap to flip & see examples! 👆</p>
+                            </div>
+                            <div class="absolute inset-0 bg-emerald-500 border-4 border-emerald-600 rounded-3xl p-6 flex flex-col items-center justify-center text-center text-white backface-hidden rotate-y-180">
+                                <h3 class="font-bold text-xl mb-2">Use ON for:</h3>
+                                <ul class="text-sm space-y-1 font-medium">
+                                    <li>• <span class="bg-emerald-700 px-2 py-0.5 rounded">on</span> Monday</li>
+                                    <li>• <span class="bg-emerald-700 px-2 py-0.5 rounded">on</span> 31st July</li>
+                                    <li>• <span class="bg-emerald-700 px-2 py-0.5 rounded">on</span> my birthday</li>
+                                    <li>• <span class="bg-emerald-700 px-2 py-0.5 rounded">on</span> New Year's Day</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flip Card IN -->
+                    <div class="perspective-1000 h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="relative w-full h-full duration-500 transform-style-3d card-inner">
+                            <div class="absolute inset-0 bg-indigo-100 border-4 border-indigo-300 rounded-3xl p-6 flex flex-col items-center justify-center text-center backface-hidden pulse-card">
+                                <span class="bg-indigo-500 text-white text-2xl font-bold px-4 py-1 rounded-xl mb-3">IN</span>
+                                <p class="font-bold text-indigo-900 text-lg">Months, Seasons & Parts of Day</p>
+                                <p class="text-xs text-indigo-700 mt-2 font-semibold">Tap to flip & see examples! 👆</p>
+                            </div>
+                            <div class="absolute inset-0 bg-indigo-500 border-4 border-indigo-600 rounded-3xl p-6 flex flex-col items-center justify-center text-center text-white backface-hidden rotate-y-180">
+                                <h3 class="font-bold text-xl mb-2">Use IN for:</h3>
+                                <ul class="text-sm space-y-1 font-medium">
+                                    <li>• <span class="bg-indigo-700 px-2 py-0.5 rounded">in</span> the afternoon</li>
+                                    <li>• <span class="bg-indigo-700 px-2 py-0.5 rounded">in</span> January</li>
+                                    <li>• <span class="bg-indigo-700 px-2 py-0.5 rounded">in</span> summer</li>
+                                    <li>• <span class="bg-indigo-700 px-2 py-0.5 rounded">in</span> the evening</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Callout Box -->
+                <div class="mt-8 bg-rose-50 border-4 border-rose-200 rounded-2xl p-5 flex items-start space-x-4">
+                    <span class="text-3xl">⚠️</span>
+                    <div>
+                        <h4 class="font-bold text-rose-900 text-lg">Watch Out! Common Trap</h4>
+                        <p class="text-sm text-rose-800">Students often mix up parts of the day! Remember: we say <span class="bg-rose-200 font-bold px-1.5 py-0.5 rounded">in</span> the afternoon, but <span class="bg-rose-200 font-bold px-1.5 py-0.5 rounded">at</span> night!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: Prepositions of Place -->
+        <section id="page-3" class="deck-page space-y-6 hidden">
+            <div class="bg-white border-4 border-amber-300 rounded-3xl p-8 shadow-xl">
+                <div class="flex items-center space-x-3 mb-6">
+                    <span class="bg-amber-500 text-white text-xl p-2 rounded-2xl">🗺️</span>
+                    <div>
+                        <h2 class="text-3xl font-bold text-amber-900">Where things are: AT vs IN</h2>
+                        <p class="text-slate-600">Let's learn the secret rule for general locations versus being completely inside!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-amber-50 border-4 border-amber-300 rounded-3xl p-6">
+                        <div class="bg-amber-500 text-white font-bold px-3 py-1 rounded-xl inline-block mb-3">General Location: AT</div>
+                        <p class="text-slate-700 mb-4">Use <strong>AT</strong> to describe the general location of where someone or something is. It answers the question: <em>"Where are you at?"</em></p>
+                        <div class="bg-white border-2 border-amber-200 rounded-2xl p-4 space-y-2">
+                            <p class="font-bold text-amber-900">Examples:</p>
+                            <p class="text-sm">🏫 Mary is <span class="bg-amber-200 font-bold px-1.5 py-0.5 rounded">at</span> the school.</p>
+                            <p class="text-sm">🏠 John is <span class="bg-amber-200 font-bold px-1.5 py-0.5 rounded">at</span> home / <span class="bg-amber-200 font-bold px-1.5 py-0.5 rounded">at</span> work / <span class="bg-amber-200 font-bold px-1.5 py-0.5 rounded">at</span> the park.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 border-4 border-indigo-300 rounded-3xl p-6">
+                        <div class="bg-indigo-500 text-white font-bold px-3 py-1 rounded-xl inline-block mb-3">Inside Building: IN</div>
+                        <p class="text-slate-700 mb-4">Use <strong>IN</strong> when you need to emphasize that someone or something is strictly <strong>inside</strong> the building or area.</p>
+                        <div class="bg-white border-2 border-indigo-200 rounded-2xl p-4 space-y-2">
+                            <p class="font-bold text-indigo-900">Examples:</p>
+                            <p class="text-sm">🏫 Mary is <span class="bg-indigo-200 font-bold px-1.5 py-0.5 rounded">in</span> the school (inside the building).</p>
+                            <p class="text-sm">📚 The book is <span class="bg-indigo-200 font-bold px-1.5 py-0.5 rounded">in</span> the library / <span class="bg-indigo-200 font-bold px-1.5 py-0.5 rounded">in</span> the room.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 border-4 border-emerald-300 rounded-3xl p-6">
+                    <div class="bg-emerald-500 text-white font-bold px-3 py-1 rounded-xl inline-block mb-3">On a Surface: ON</div>
+                    <p class="text-slate-700 mb-3">Use <strong>ON</strong> when something is resting on top of a surface.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-white border-2 border-emerald-200 px-3 py-1.5 rounded-xl text-sm font-semibold">📦 on the box</span>
+                        <span class="bg-white border-2 border-emerald-200 px-3 py-1.5 rounded-xl text-sm font-semibold">📚 on the shelf</span>
+                        <span class="bg-white border-2 border-emerald-200 px-3 py-1.5 rounded-xl text-sm font-semibold">🟩 on the floor</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: Transport Rules -->
+        <section id="page-4" class="deck-page space-y-6 hidden">
+            <div class="bg-white border-4 border-amber-300 rounded-3xl p-8 shadow-xl">
+                <div class="flex items-center space-x-3 mb-6">
+                    <span class="bg-amber-500 text-white text-xl p-2 rounded-2xl">🚌</span>
+                    <div>
+                        <h2 class="text-3xl font-bold text-amber-900">Transport Rules: IN vs ON</h2>
+                        <p class="text-slate-600">How do we travel? The rule depends on the size of the vehicle!</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-sky-50 border-4 border-sky-300 rounded-3xl p-6 space-y-4">
+                        <div class="bg-sky-500 text-white font-bold px-3 py-1 rounded-xl inline-block">Use IN for Vehicles</div>
+                        <p class="text-sm text-slate-700">Smaller, personal, or enclosed vehicles where you must sit down and cannot walk around.</p>
+                        <div class="space-y-2">
+                            <div class="bg-white border-2 border-sky-200 p-3 rounded-2xl flex items-center space-x-3">
+                                <span class="text-2xl">🚗</span>
+                                <span class="font-bold text-sky-900"><span class="bg-sky-200 px-1.5 py-0.5 rounded">in</span> a car</span>
+                            </div>
+                            <div class="bg-white border-2 border-sky-200 p-3 rounded-2xl flex items-center space-x-3">
+                                <span class="text-2xl">🚕</span>
+                                <span class="font-bold text-sky-900"><span class="bg-sky-200 px-1.5 py-0.5 rounded">in</span> a taxi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border-4 border-purple-300 rounded-3xl p-6 space-y-4">
+                        <div class="bg-purple-500 text-white font-bold px-3 py-1 rounded-xl inline-block">Use ON for Vehicles</div>
+                        <p class="text-sm text-slate-700">Larger, public, or open vehicles where you can stand, walk, or stand on the surface.</p>
+                        <div class="space-y-2">
+                            <div class="bg-white border-2 border-purple-200 p-3 rounded-2xl flex items-center space-x-3">
+                                <span class="text-2xl">🚌</span>
+                                <span class="font-bold text-purple-900"><span class="bg-purple-200 px-1.5 py-0.5 rounded">on</span> a bus</span>
+                            </div>
+                            <div class="bg-white border-2 border-purple-200 p-3 rounded-2xl flex items-center space-x-3">
+                                <span class="text-2xl">🚆</span>
+                                <span class="font-bold text-purple-900"><span class="bg-purple-200 px-1.5 py-0.5 rounded">on</span> a train</span>
+                            </div>
+                            <div class="bg-white border-2 border-purple-200 p-3 rounded-2xl flex items-center space-x-3">
+                                <span class="text-2xl">🚲</span>
+                                <span class="font-bold text-purple-900"><span class="bg-purple-200 px-1.5 py-0.5 rounded">on</span> a bicycle</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: Summary & Transition to Game -->
+        <section id="page-5" class="deck-page space-y-6 hidden">
+            <div class="bg-white border-4 border-amber-300 rounded-3xl p-8 shadow-xl text-center space-y-6">
+                <div class="inline-block bg-amber-100 text-amber-800 font-bold px-4 py-1.5 rounded-full text-sm">Review Complete! 🎉</div>
+                <h2 class="text-4xl font-bold text-amber-900">Fantastic Job, Explorer!</h2>
+                <p class="text-slate-600 max-w-xl mx-auto">
+                    You have completed the Learning Deck! Select your challenge difficulty below and jump into the Practice Game challenge!
+                </p>
+
+                <!-- Difficulty Selector Box -->
+                <div class="bg-amber-50 border-4 border-amber-200 rounded-3xl p-6 text-center max-w-xl mx-auto space-y-3">
+                    <h3 class="font-bold text-amber-900 text-lg">⚙️ Select Game Difficulty</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="setDifficulty('easy')" id="diff-easy-btn" class="diff-btn bg-white border-2 border-amber-300 hover:bg-amber-100 text-amber-900 font-bold p-3 rounded-2xl transition text-sm">
+                            🌱 Easy<br><span class="text-xs font-normal text-slate-500">30s / No Penalty</span>
+                        </button>
+                        <button onclick="setDifficulty('medium')" id="diff-medium-btn" class="diff-btn bg-amber-500 text-white border-2 border-amber-600 font-bold p-3 rounded-2xl transition text-sm shadow-md">
+                            ⚡ Medium<br><span class="text-xs font-normal text-amber-100">20s / Standard</span>
+                        </button>
+                        <button onclick="setDifficulty('hard')" id="diff-hard-btn" class="diff-btn bg-white border-2 border-amber-300 hover:bg-amber-100 text-amber-900 font-bold p-3 rounded-2xl transition text-sm">
+                            🔥 Hard<br><span class="text-xs font-normal text-slate-500">12s / Fast Paced</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-4">
+                    <button onclick="goToPage(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-3 rounded-2xl transition">
+                        🔄 Restart Deck
+                    </button>
+                    <button onclick="startTheGame()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transition flex items-center space-x-2">
+                        <span>🎮 Launch Game Challenge</span>
+                        <span>➔</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PRACTICE GAME VIEWS ================= -->
+
+        <!-- GAME VIEW: Active Question -->
+        <section id="game-question-section" class="hidden space-y-6">
+            <div class="bg-white border-4 border-emerald-300 rounded-3xl p-8 shadow-xl space-y-6">
+                <!-- Progress Header -->
+                <div class="flex items-center justify-between border-b-2 border-emerald-100 pb-4">
+                    <span id="question-progress-label" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-xl text-sm">Question 1 of 8</span>
+                    <span id="difficulty-tag-badge" class="bg-indigo-100 text-indigo-800 font-bold px-3 py-1 rounded-xl text-sm">⚡ Medium Mode</span>
+                    <span id="skill-tag-badge" class="bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded-xl text-sm">⏰ Time</span>
+                </div>
+
+                <!-- Diagram / Visual Cue -->
+                <div id="question-visual" class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-6 text-center text-4xl">
+                    ⏰
+                </div>
+
+                <!-- Prompt with Audio Read-Aloud Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <h3 id="question-prompt" class="text-2xl font-bold text-slate-800 text-center">
+                        Choose the correct word: Mary wakes up ___ 7 am.
+                    </h3>
+                    <button onclick="readCurrentQuestion()" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 px-3 py-2 rounded-xl text-sm font-bold flex items-center space-x-1 transition shadow-sm shrink-0">
+                        <span>🔊 Play Question Audio</span>
+                    </button>
+                </div>
+
+                <!-- Hint Box (Hidden by default) -->
+                <div id="hint-box" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 flex items-start space-x-3 text-amber-900">
+                    <span class="text-2xl">💡</span>
+                    <div>
+                        <h4 class="font-bold">Guiding Hint:</h4>
+                        <p id="hint-text" class="text-sm">Remember our rule for specific clock times! Do we use at, on, or in?</p>
+                    </div>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Feedback / Solution Box -->
+                <div id="feedback-box" class="hidden rounded-2xl p-4 border-2">
+                    <p id="feedback-message" class="font-bold mb-2"></p>
+                    <div id="solution-steps" class="hidden text-sm space-y-1 font-medium mt-2 pt-2 border-t border-emerald-200">
+                        <!-- Vertical steps -->
+                    </div>
+                    <button id="next-question-btn" onclick="nextGameQuestion()" class="hidden mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-md">
+                        Continue ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME VIEW: Gaps Report & Summary -->
+        <section id="game-summary-section" class="hidden space-y-6">
+            <div class="bg-white border-4 border-emerald-300 rounded-3xl p-8 shadow-xl text-center space-y-6">
+                <div class="inline-block bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">Game Complete! 🏆</div>
+                <h2 class="text-4xl font-bold text-slate-800">Your Final Score: <span id="final-score-val">0</span></h2>
+                
+                <div id="gaps-report-container" class="bg-slate-50 border-2 border-slate-200 rounded-3xl p-6 text-left space-y-4 max-w-2xl mx-auto">
+                    <h3 class="font-bold text-slate-900 text-lg border-b pb-2">📊 Learning Gaps & Review Guide</h3>
+                    <div id="gaps-content" class="space-y-3 text-sm">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-4">
+                    <button onclick="restartGame()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-3 rounded-2xl transition">
+                        🔄 Play Again
+                    </button>
+                    <button onclick="returnToDeck()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-2xl transition">
+                        📖 Return to Learning Deck
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="deck-footer" class="bg-white border-t-4 border-amber-200 px-6 py-4 shadow-sm sticky bottom-0 z-30 flex items-center justify-between">
+        <button id="back-btn" onclick="prevPage()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-3 rounded-2xl transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+            ⬅️ Back
+        </button>
+        <span id="footer-page-text" class="font-bold text-amber-900">Page 1 of 5</span>
+        <button id="next-btn" onclick="nextPage()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-2xl shadow-lg transition">
+            Next ➔
+        </button>
+    </footer>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 5;
+        let mode = 'deck'; // 'deck' or 'game'
+        let currentDifficulty = 'medium'; // 'easy', 'medium', 'hard'
+        let timerInterval = null;
+        let timeLeft = 20;
+        let maxTime = 20;
+        let currentStreak = 0;
+        let score = 0;
+
+        // Web Audio API Sound Synthesizer (No external audio URLs required)
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    // Upward celebratory chime chord
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                        gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.3);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.08);
+                        osc.stop(now + idx * 0.08 + 0.3);
+                    });
+                } else if (type === 'incorrect') {
+                    // Gentle buzzer tone
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.linearRampToValueAtTime(100, now + 0.25);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'tick') {
+                    // Subtle tick
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                }
+            } catch (e) {
+                console.log('Audio blocked or unsupported', e);
+            }
+        }
+
+        // ================= TEXT-TO-SPEECH (TTS) CLEAR LADY VOICE =================
+        let synth = window.speechSynthesis;
+        let isReading = false;
+        let selectedVoice = null;
+
+        function loadVoices() {
+            if (!synth) return;
+            const voices = synth.getVoices();
+            selectedVoice = voices.find(v => 
+                v.lang.startsWith('en') && (
+                    v.name.includes('Samantha') || 
+                    v.name.includes('Karen') || 
+                    v.name.includes('Victoria') || 
+                    v.name.includes('Google US English Female') ||
+                    v.name.includes('Google UK English Female') ||
+                    v.name.toLowerCase().includes('female')
+                )
+            ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+        }
+
+        if (synth) {
+            loadVoices();
+            if (synth.onvoiceschanged !== undefined) {
+                synth.onvoiceschanged = loadVoices;
+            }
+        }
+
+        function cleanTextForReading(text) {
+            // Replace blanks (___, ____, underscores) with a pause/empty space so it never says "underscore"
+            return text.replace(/_+/g, '');
+        }
+
+        function speakText(text, onEndCallback) {
+            if (!synth) return;
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            const cleanedText = cleanTextForReading(text);
+            const utterThis = new SpeechSynthesisUtterance(cleanedText);
+            if (selectedVoice) {
+                utterThis.voice = selectedVoice;
+            }
+            utterThis.rate = 0.95;
+            utterThis.pitch = 1.1;
+
+            utterThis.onend = () => {
+                isReading = false;
+                updateTTSButtonState(false);
+                if (onEndCallback) onEndCallback();
+            };
+
+            utterThis.onerror = () => {
+                isReading = false;
+                updateTTSButtonState(false);
+            };
+
+            isReading = true;
+            updateTTSButtonState(true);
+            synth.speak(utterThis);
+        }
+
+        function stopSpeaking() {
+            if (synth && synth.speaking) {
+                synth.cancel();
+            }
+            isReading = false;
+            updateTTSButtonState(false);
+        }
+
+        function toggleAudioReader() {
+            if (isReading) {
+                stopSpeaking();
+            } else {
+                if (mode === 'deck') {
+                    const activePageEl = document.getElementById(`page-${currentPage}`);
+                    let textToRead = activePageEl ? activePageEl.innerText : "Welcome to Preposition Playground";
+                    speakText(textToRead);
+                } else {
+                    const currentPrompt = gameQuestions[currentQuestionIdx].prompt;
+                    speakText(currentPrompt);
+                }
+            }
+        }
+
+        function updateTTSButtonState(reading) {
+            const icon = document.getElementById('tts-icon');
+            const label = document.getElementById('tts-label');
+            const topBtn = document.getElementById('tts-toggle');
+
+            if (reading) {
+                icon.innerText = '⏹️';
+                label.innerText = 'Stop Audio';
+                topBtn.className = 'bg-rose-100 hover:bg-rose-200 text-rose-900 px-3 py-1.5 rounded-xl text-sm font-bold flex items-center space-x-1 transition shadow-sm';
+            } else {
+                icon.innerText = '🔊';
+                label.innerText = 'Read Aloud';
+                topBtn.className = 'bg-indigo-100 hover:bg-indigo-200 text-indigo-900 px-3 py-1.5 rounded-xl text-sm font-bold flex items-center space-x-1 transition shadow-sm';
+            }
+        }
+
+        function readCurrentQuestion() {
+            if (mode === 'game') {
+                const currentPrompt = gameQuestions[currentQuestionIdx].prompt;
+                speakText(currentPrompt);
+            }
+        }
+
+        function setDifficulty(diff) {
+            currentDifficulty = diff;
+            document.querySelectorAll('.diff-btn').forEach(btn => {
+                btn.className = 'diff-btn bg-white border-2 border-amber-300 hover:bg-amber-100 text-amber-900 font-bold p-3 rounded-2xl transition text-sm';
+            });
+            const activeBtn = document.getElementById(`diff-${diff}-btn`);
+            activeBtn.className = 'diff-btn bg-amber-500 text-white border-2 border-amber-600 font-bold p-3 rounded-2xl transition text-sm shadow-md';
+        }
+
+        function updateView() {
+            if (mode !== 'deck') return;
+            stopSpeaking();
+            document.querySelectorAll('.deck-page').forEach((el, idx) => {
+                if (idx + 1 === currentPage) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('page-indicator').innerText = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('footer-page-text').innerText = `Page ${currentPage} of ${totalPages}`;
+
+            document.getElementById('back-btn').disabled = (currentPage === 1);
+            const nextBtn = document.getElementById('next-btn');
+            if (currentPage === totalPages) {
+                nextBtn.innerText = 'Finished! 🎉';
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.innerText = 'Next ➔';
+                nextBtn.disabled = false;
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateView();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updateView();
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updateView();
+        }
+
+        function flipCard(cardEl) {
+            const inner = cardEl.querySelector('.card-inner');
+            inner.classList.toggle('rotate-y-180');
+        }
+
+        // ================= GAME LOGIC =================
+        const gameQuestions = [
+            {
+                id: 1,
+                skill: "Time - Specific Hours",
+                visual: "⏰",
+                prompt: "Choose the correct word: My little brother wakes up ___ 7 am.",
+                options: ["at", "on", "in"],
+                correct: "at",
+                hint: "Remember our rule: for exact clock times like 7 am or noon, we use 'at'!",
+                working: [
+                    "Step 1: Look at the target time ('7 am').",
+                    "Step 2: Exact clock times take the preposition 'at'.",
+                    "Step 3: Correct answer: at."
+                ]
+            },
+            {
+                id: 2,
+                skill: "Time - Days & Dates",
+                visual: "📅",
+                prompt: "Choose the correct word: We have art class ___ Monday.",
+                options: ["in", "on", "at"],
+                correct: "on",
+                hint: "Think about days of the week and specific dates. Which helper word do we pair them with?",
+                working: [
+                    "Step 1: Identify the time category ('Monday' is a day of the week).",
+                    "Step 2: Days and specific dates take the preposition 'on'.",
+                    "Step 3: Correct answer: on."
+                ]
+            },
+            {
+                id: 3,
+                skill: "Time - Parts of Day & Months",
+                visual: "☀️",
+                prompt: "Choose the correct word: We love playing football ___ the afternoon.",
+                options: ["at", "on", "in"],
+                correct: "in",
+                hint: "For parts of the day like morning or afternoon (and months/seasons), we use 'in'!",
+                working: [
+                    "Step 1: Spot the time phrase ('the afternoon').",
+                    "Step 2: Parts of the day and months take the preposition 'in'.",
+                    "Step 3: Correct answer: in."
+                ]
+            },
+            {
+                id: 4,
+                skill: "Place - General Location",
+                visual: "🏫",
+                prompt: "Choose the correct word: Mary is waiting ___ the school.",
+                options: ["on", "at", "in"],
+                correct: "at",
+                hint: "When describing a general location answering 'Where are you at?', use 'at'!",
+                working: [
+                    "Step 1: Determine if this is a general location or strict indoor entry.",
+                    "Step 2: General location ('at the school') takes 'at'.",
+                    "Step 3: Correct answer: at."
+                ]
+            },
+            {
+                id: 5,
+                skill: "Place - Inside Building",
+                visual: "📚",
+                prompt: "Choose the correct word: The storybook is ___ the library.",
+                options: ["at", "on", "in"],
+                correct: "in",
+                hint: "When emphasizing that something is strictly inside the building or room, we use 'in'.",
+                working: [
+                    "Step 1: Check the context (strictly inside the library building).",
+                    "Step 2: Being inside a room/building takes 'in'.",
+                    "Step 3: Correct answer: in."
+                ]
+            },
+            {
+                id: 6,
+                skill: "Place - Surfaces",
+                visual: "📦",
+                prompt: "Choose the correct word: Put your pencil box ___ the desk.",
+                options: ["in", "at", "on"],
+                correct: "on",
+                hint: "When an object is resting on top of a flat surface, which preposition do we use?",
+                working: [
+                    "Step 1: Identify the relationship (resting on top of a surface).",
+                    "Step 2: Surfaces take the preposition 'on'.",
+                    "Step 3: Correct answer: on."
+                ]
+            },
+            {
+                id: 7,
+                skill: "Transport - Enclosed Vehicles",
+                visual: "🚗",
+                prompt: "Choose the correct word: Dad drives us to grandmama's house ___ a car.",
+                options: ["on", "at", "in"],
+                correct: "in",
+                hint: "For smaller personal cars or taxis where you sit enclosed, do we use 'in' or 'on'?",
+                working: [
+                    "Step 1: Look at the vehicle type ('car' is enclosed and personal).",
+                    "Step 2: Cars and taxis take 'in'.",
+                    "Step 3: Correct answer: in."
+                ]
+            },
+            {
+                id: 8,
+                skill: "Transport - Public Vehicles",
+                visual: "🚌",
+                prompt: "Choose the correct word: All the students ride ___ a bus to school.",
+                options: ["in", "on", "at"],
+                correct: "on",
+                hint: "For larger public transport where you can walk or stand (bus, train, bicycle), we use 'on'!",
+                working: [
+                    "Step 1: Look at the vehicle type ('bus' is large and public).",
+                    "Step 2: Buses, trains, and bicycles take 'on'.",
+                    "Step 3: Correct answer: on."
+                ]
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let attemptsOnCurrent = 0;
+        const totalQuestions = gameQuestions.length;
+        let resultsLog = [];
+
+        function startTheGame() {
+            mode = 'game';
+            initAudio();
+            stopSpeaking();
+            document.getElementById('mode-badge').innerText = 'Game';
+            document.getElementById('mode-badge').className = 'bg-emerald-500 text-white text-xl font-bold px-3 py-1 rounded-2xl shadow-sm';
+            document.getElementById('app-title').innerText = 'Preposition Challenge Game';
+            
+            document.getElementById('deck-indicator').classList.add('hidden');
+            document.getElementById('game-indicator').classList.remove('hidden');
+            document.getElementById('deck-footer').classList.add('hidden');
+            document.getElementById('timer-bar-container').classList.remove('hidden');
+
+            document.querySelectorAll('.deck-page').forEach(el => el.classList.add('hidden'));
+            document.getElementById('game-summary-section').classList.add('hidden');
+            document.getElementById('game-question-section').classList.remove('hidden');
+
+            const badge = document.getElementById('difficulty-tag-badge');
+            if (currentDifficulty === 'easy') badge.innerText = '🌱 Easy Mode (30s)';
+            else if (currentDifficulty === 'medium') badge.innerText = '⚡ Medium Mode (20s)';
+            else badge.innerText = '🔥 Hard Mode (12s)';
+
+            currentQuestionIdx = 0;
+            score = 0;
+            currentStreak = 0;
+            resultsLog = [];
+            updateScoreDisplay();
+            loadGameQuestion();
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('current-score').innerText = score;
+            const streakBadge = document.getElementById('streak-badge');
+            const streakVal = document.getElementById('streak-val');
+            if (currentStreak > 1) {
+                streakBadge.classList.remove('hidden');
+                streakVal.innerText = currentStreak;
+            } else {
+                streakBadge.classList.add('hidden');
+            }
+        }
+
+        function loadGameQuestion() {
+            attemptsOnCurrent = 0;
+            if (timerInterval) clearInterval(timerInterval);
+            stopSpeaking();
+
+            if (currentDifficulty === 'easy') maxTime = 30;
+            else if (currentDifficulty === 'medium') maxTime = 20;
+            else maxTime = 12;
+
+            timeLeft = maxTime;
+            updateTimerBar();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerBar();
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    playSound('tick');
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+
+            const q = gameQuestions[currentQuestionIdx];
+            
+            document.getElementById('question-progress-label').innerText = `Question ${currentQuestionIdx + 1} of ${totalQuestions}`;
+            document.getElementById('skill-tag-badge').innerText = q.skill;
+            document.getElementById('question-visual').innerText = q.visual;
+            document.getElementById('question-prompt').innerText = q.prompt;
+
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('solution-steps').classList.add('hidden');
+            document.getElementById('next-question-btn').classList.add('hidden');
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-900 font-bold text-xl py-4 px-6 rounded-2xl shadow-sm transition transform active:scale-95';
+                btn.innerText = opt;
+                btn.onclick = () => submitAnswer(opt, btn);
+                container.appendChild(btn);
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateTimerBar() {
+            const fill = document.getElementById('timer-bar-fill');
+            const percentage = Math.max(0, (timeLeft / maxTime) * 100);
+            fill.style.width = `${percentage}%`;
+            if (percentage <= 30) {
+                fill.className = 'bg-rose-600 h-2.5 transition-all duration-1000';
+            } else if (percentage <= 60) {
+                fill.className = 'bg-amber-500 h-2.5 transition-all duration-1000';
+            } else {
+                fill.className = 'bg-emerald-500 h-2.5 transition-all duration-1000';
+            }
+        }
+
+        function handleTimeOut() {
+            if (timerInterval) clearInterval(timerInterval);
+            playSound('incorrect');
+            currentStreak = 0;
+            updateScoreDisplay();
+
+            const q = gameQuestions[currentQuestionIdx];
+            const feedbackBox = document.getElementById('feedback-box');
+            const feedbackMsg = document.getElementById('feedback-message');
+            const nextBtn = document.getElementById('next-question-btn');
+
+            feedbackBox.classList.remove('hidden');
+            feedbackBox.className = 'rounded-2xl p-4 border-2 bg-rose-50 border-rose-300 text-rose-900';
+            feedbackMsg.innerText = `⏰ Time's up! The correct answer is "${q.correct}". Streak reset to 0.`;
+
+            const stepsContainer = document.getElementById('solution-steps');
+            stepsContainer.classList.remove('hidden');
+            stepsContainer.innerHTML = q.working.map(s => `<div>• ${s}</div>`).join('');
+
+            resultsLog.push({ id: q.id, skill: q.skill, correct: false, attempts: 2 });
+
+            document.querySelectorAll('#options-container button').forEach(b => {
+                b.disabled = true;
+                if (b.innerText === q.correct) {
+                    b.className = 'bg-emerald-500 text-white border-2 border-emerald-600 font-bold text-xl py-4 px-6 rounded-2xl';
+                }
+            });
+
+            nextBtn.classList.remove('hidden');
+            nextBtn.focus();
+        }
+
+        function submitAnswer(selectedOpt, btnEl) {
+            if (timerInterval) clearInterval(timerInterval);
+            stopSpeaking();
+            const q = gameQuestions[currentQuestionIdx];
+            attemptsOnCurrent++;
+
+            const feedbackBox = document.getElementById('feedback-box');
+            const feedbackMsg = document.getElementById('feedback-message');
+            const nextBtn = document.getElementById('next-question-btn');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedOpt === q.correct) {
+                playSound('correct');
+                btnEl.className = 'bg-emerald-500 text-white border-2 border-emerald-600 font-bold text-xl py-4 px-6 rounded-2xl shadow-md transform scale-105 transition';
+                
+                if (attemptsOnCurrent === 1) {
+                    currentStreak++;
+                    // Score calculation: Base 100 points + streak multiplier bonus!
+                    let earnedPoints = 100 + (currentStreak - 1) * 50;
+                    score += earnedPoints;
+                    updateScoreDisplay();
+
+                    feedbackBox.className = 'rounded-2xl p-4 border-2 bg-emerald-50 border-emerald-300 text-emerald-900';
+                    feedbackMsg.innerText = `🎉 Spot on! +${earnedPoints} pts (Streak x${currentStreak}!)`;
+                } else {
+                    currentStreak = 0;
+                    updateScoreDisplay();
+                    feedbackBox.className = 'rounded-2xl p-4 border-2 bg-amber-50 border-amber-300 text-amber-900';
+                    feedbackMsg.innerText = '👍 Correct on your second attempt! (+50 pts)';
+                    score += 50;
+                    updateScoreDisplay();
+                }
+
+                resultsLog.push({ id: q.id, skill: q.skill, correct: true, attempts: attemptsOnCurrent });
+
+                document.querySelectorAll('#options-container button').forEach(b => b.disabled = true);
+                nextBtn.classList.remove('hidden');
+                nextBtn.focus();
+
+            } else {
+                playSound('incorrect');
+                btnEl.className = 'bg-rose-100 text-rose-800 border-2 border-rose-300 font-bold text-xl py-4 px-6 rounded-2xl';
+                btnEl.disabled = true;
+
+                if (attemptsOnCurrent === 1 && currentDifficulty !== 'hard') {
+                    currentStreak = 0;
+                    updateScoreDisplay();
+                    feedbackBox.className = 'rounded-2xl p-4 border-2 bg-amber-50 border-amber-300 text-amber-900';
+                    feedbackMsg.innerText = '⚠️ Not quite! Check the hint below and try your second attempt.';
+                    
+                    document.getElementById('hint-box').classList.remove('hidden');
+                    document.getElementById('hint-text').innerText = q.hint;
+                    
+                    timerInterval = setInterval(() => {
+                        timeLeft--;
+                        updateTimerBar();
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            handleTimeOut();
+                        }
+                    }, 1000);
+                } else {
+                    currentStreak = 0;
+                    updateScoreDisplay();
+                    feedbackBox.className = 'rounded-2xl p-4 border-2 bg-rose-50 border-rose-300 text-rose-900';
+                    feedbackMsg.innerText = `❌ Incorrect. The correct answer is "${q.correct}". Streak reset to 0.`;
+
+                    document.getElementById('hint-box').classList.add('hidden');
+                    
+                    const stepsContainer = document.getElementById('solution-steps');
+                    stepsContainer.classList.remove('hidden');
+                    stepsContainer.innerHTML = q.working.map(s => `<div>• ${s}</div>`).join('');
+
+                    resultsLog.push({ id: q.id, skill: q.skill, correct: false, attempts: 2 });
+
+                    document.querySelectorAll('#options-container button').forEach(b => {
+                        b.disabled = true;
+                        if (b.innerText === q.correct) {
+                            b.className = 'bg-emerald-500 text-white border-2 border-emerald-600 font-bold text-xl py-4 px-6 rounded-2xl';
+                        }
+                    });
+
+                    nextBtn.classList.remove('hidden');
+                    nextBtn.focus();
+                }
+            }
+        }
+
+        function nextGameQuestion() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < totalQuestions) {
+                loadGameQuestion();
+            } else {
+                showGameSummary();
+            }
+        }
+
+        function showGameSummary() {
+            if (timerInterval) clearInterval(timerInterval);
+            stopSpeaking();
+            document.getElementById('game-question-section').classList.add('hidden');
+            document.getElementById('timer-bar-container').classList.add('hidden');
+            document.getElementById('game-summary-section').classList.remove('hidden');
+            document.getElementById('final-score-val').innerText = `${score} Points ⭐`;
+
+            const gapsContainer = document.getElementById('gaps-content');
+            gapsContainer.innerHTML = '';
+
+            const gaps = resultsLog.filter(r => !r.correct || r.attempts > 1);
+
+            if (gaps.length === 0) {
+                gapsContainer.innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-emerald-900 font-semibold">🌟 Amazing! You mastered every single preposition skill with zero mistakes on your first try!</div>`;
+            } else {
+                const uniqueGaps = [...new Set(gaps.map(g => g.skill))];
+                uniqueGaps.forEach(skill => {
+                    gapsContainer.innerHTML += `
+                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-1">
+                            <span class="font-bold text-amber-900">📌 Focus Area: ${skill}</span>
+                            <p class="text-xs text-slate-600">Review the Learning Deck pages for this topic to strengthen your understanding before trying again!</p>
+                        </div>
+                    `;
+                });
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartGame() {
+            startTheGame();
+        }
+
+        function returnToDeck() {
+            if (timerInterval) clearInterval(timerInterval);
+            stopSpeaking();
+            mode = 'deck';
+            document.getElementById('mode-badge').innerText = 'Deck';
+            document.getElementById('mode-badge').className = 'bg-amber-500 text-white text-xl font-bold px-3 py-1 rounded-2xl shadow-sm';
+            document.getElementById('app-title').innerText = 'Preposition Playground';
+
+            document.getElementById('game-indicator').classList.add('hidden');
+            document.getElementById('timer-bar-container').classList.add('hidden');
+            document.getElementById('deck-indicator').classList.remove('hidden');
+            document.getElementById('deck-footer').classList.remove('hidden');
+
+            document.getElementById('game-summary-section').classList.add('hidden');
+            currentPage = 1;
+            updateView();
+        }
+    </script>
+</body>
+</html>
